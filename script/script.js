@@ -1,6 +1,5 @@
 
 const cube = _.chunk(document.querySelectorAll('#game img'), 10);
-let runGame = true;
 
 let xQueue = [];
 let yQueue = [];
