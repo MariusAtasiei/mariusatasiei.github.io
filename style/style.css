@@ -56,6 +56,10 @@ main {
     height: 4.375rem;
 }
 
+#cases {
+    opacity: 0.4;
+}
+
 #gameOver {
     display: flex;
     position: absolute;
@@ -103,4 +107,40 @@ main {
         width: 2.7rem;
         height: 2.7rem;
     }
-  }
+}
+
+#board {
+    position: absolute;
+    left: 6%;
+}
+
+#board h1 {
+    margin: 60px 0 5px 0;
+    font-size: 4rem;
+    color: white;
+}
+
+#board div {
+    background-color: black;
+    border-radius: 16px;
+}
+
+#board #flags {
+    display: flex;
+    justify-content: center;
+}
+
+#board #time {
+    min-width: 150%;
+}
+
+#board h2 {
+    font-size: 6rem;
+    margin: 0;
+    color: white;
+    margin: auto 8px;
+}
+
+#board #time h2 {
+    margin: 0 10%;
+}
