@@ -1,0 +1,90 @@
+body {
+    margin: 0 auto;
+}
+
+html {
+    font-size: 16px;
+}
+
+header {
+    display: flex;
+    background: rgb(53,53,54);
+    background: linear-gradient(90deg, rgba(53,53,54,1) 0%, rgba(42,42,42,1) 35%, rgba(128,128,128,1) 100%);    
+    height: 8rem;
+    align-items: center;
+}
+
+header img, header h1 {
+    float: left;
+}
+
+header img {
+    margin-left: 4%;
+}
+
+header h1 {
+    color: white;
+    font-family: 'Amatic SC', cursive;
+    font-size: 4rem;
+    margin-left: 1%;
+}
+
+main {
+    display: flex;
+    background-color: #8c8c8c;
+    padding: 1.7% 0;
+}
+
+#game {
+    width: 740px;
+    height: 740px;
+    border: black solid 2px;
+    margin: 0 auto;
+}
+
+#game button {
+    margin: 0;
+}
+
+#game img {
+    border: 2px solid black;
+    margin: 0;
+    float: left;
+    cursor: pointer;
+}
+
+#gameOver {
+    display: flex;
+    position: absolute;
+    width: 740px;
+    height: 740px;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#gameOverContent {
+    border: black solid 3px;
+    background-color: #b8b8b8;
+    height: 30%;
+    width: 80%;
+}
+
+#gameOverContent p {
+    text-align: center  ;
+    color: #fff;
+    font-size: 5rem;
+    margin: 1rem 0;
+}
+
+#gameOverContent button {
+    border: black solid 1px;
+    border-radius: 12px;
+    height: 2rem;
+    margin: 1% 33%;
+    font-size: 1.4rem;
+    text-align: center;
+    width: 13rem;
+    height: 4rem;
+}
+
