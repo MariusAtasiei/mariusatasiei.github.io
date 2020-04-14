@@ -46,6 +46,7 @@ const revealNearby = (i, j) => { //I'm using some parts of Lee's Algorithm
     //di and dj are helping me for checking the cells next to it
     const di = [-1, 0, 1, 0, 1, -1, 1, -1];
     const dj = [0, 1, 0, -1, 1, -1, -1, 1];
+    let visitedCells = [];
     let q = [[i, j]]; //I'm using a pair queue to store the i and j of empty cells(with alt = 0)
     while (!q.empty) {
         const [ii, jj] = q.pop(); //ii = the first value of last pair and jj = the second value of last pair while last queue's pair is removing
@@ -56,8 +57,9 @@ const revealNearby = (i, j) => { //I'm using some parts of Lee's Algorithm
             if (OK(nextI, nextJ)) {
                 cube[nextI][nextJ].src = `./images/${cube[nextI][nextJ].alt}Case.jpg`; //cube[nextI][nextJ].alt = number of mines that cell touch 
                 // 0Case.jpg = empty cell, 1Case.jpg = Cell with digit 1, 2Case.jpg = cell with digit 2, ... , 8Case.jpg = cell with digit 8
-                if (cube[nextI][nextJ].alt === '0') {
+                if (cube[nextI][nextJ].alt === '0' && !(visitedCells.find(cell => cell[0] == nextI && cell[1] == nextJ)) {
                     q.push([nextI, nextJ]); //push the i and j of the empty cells
+                    visitedCells.push([nextI, nextJ]);
                 }
             }
         }
