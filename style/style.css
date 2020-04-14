@@ -1,5 +1,6 @@
 body {
     margin: 0 auto;
+    height: 100%;
 }
 
 html {
@@ -51,6 +52,8 @@ main {
     margin: 0;
     float: left;
     cursor: pointer;
+    width: 4.375rem;
+    height: 4.375rem;
 }
 
 #gameOver {
@@ -100,4 +103,4 @@ main {
         width: 2.7rem;
         height: 2.7rem;
     }
-}
+  }
