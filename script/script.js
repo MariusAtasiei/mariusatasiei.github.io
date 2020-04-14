@@ -1,11 +1,4 @@
 
-/*
-    Mai ai de facut:
-    - sa creezi 2 queue uri pentru index urile bombelor pentru a le asocia lui gameOver
-    - creezi if urile pentru alt uri
-    
-*/
-
 const cube = _.chunk(document.querySelectorAll('#game img'), 10);
 let runGame = true;
 
