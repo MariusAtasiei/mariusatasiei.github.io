@@ -125,7 +125,7 @@ for (let i = 0; i < 10; ++i)
                 gameOver();
             } else if (e.target.alt === '0') {
                 cube[i][j].src = './images/0Case.jpg';
-                // revealNearby(i, j);
+                revealNearby(i, j);
             } else {
                 e.target.src = `./images/${e.target.alt}Case.jpg`;
             }
