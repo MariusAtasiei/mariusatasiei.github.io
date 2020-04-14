@@ -4,6 +4,24 @@ const cube = _.chunk(document.querySelectorAll('#game img'), 10);
 let xQueue = [];
 let yQueue = [];
 
+let runGame = false;
+const time = document.querySelector('#time h2');
+const flag = document.querySelector('#flags h2');
+let flagsCount = 0;
+
+let flagCells = [];
+let cellsOpened = 0;
+
+let cellsDiscovered = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
 
 const randomMines = () => {
     let i = 0;
@@ -12,6 +30,7 @@ const randomMines = () => {
         const y = Math.floor(Math.random() * 10);
         if (cube[x][y].alt === '0') {
             cube[x][y].alt = '#';
+            cellsDiscovered[x][y] = 9;
             xQueue.push(x);
             yQueue.push(y);
             if (x - 1 >= 0)
@@ -56,7 +75,9 @@ const revealNearby = (i, j) => {
             const nextI = di[p] + ii;
             const nextJ = dj[p] + jj;
             if (OK(nextI, nextJ)) {
-                cube[nextI][nextJ].src = `./images/${cube[nextI][nextJ].alt}Case.jpg`; //cube[nextI][nextJ].alt = number of mines that cell touch 
+                cube[nextI][nextJ].src = `./images/${cube[nextI][nextJ].alt}Case.jpg`;
+                ++cellsOpened; //cube[nextI][nextJ].alt = number of mines that cell touch 
+                cellsDiscovered[nextI][nextJ] = 1;
                 // 0Case.jpg = empty cell, 1Case.jpg = Cell with digit 1, 2Case.jpg = cell with digit 2, ... , 8Case.jpg = cell with digit 8
                 const actualCell = [nextI, nextJ]
                 if (cube[nextI][nextJ].alt === '0' && !(visitedCells.find(cell => cell[0] === actualCell[0] && cell[1] === actualCell[1]))) {
@@ -91,9 +112,23 @@ const newGame = () => {
     xQueue = [];
     yQueue = [];
     randomMines();
+    runGame = true;
+    flagsCount = 10;
+    flag.textContent = flagsCount;
+    cellsDiscovered = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
 }
 
 const gameOver = () => {
+    runGame = false;
     const gameMain = document.querySelector('#game');
     let gameOver = document.createElement('div');
     gameOver.id = 'gameOver';
@@ -112,6 +147,30 @@ const gameOver = () => {
     button.onclick = newGame;
 }
 
+const gameWon = () => {
+    runGame = false;
+    const gameMain = document.querySelector('#game');
+    let gameOver = document.createElement('div');
+    gameOver.id = 'gameOver';
+    let gameOverContent = document.createElement('div');
+    gameOverContent.id = 'gameOverContent';
+    let p = document.createElement('p');
+    p.innerHTML = 'YOU WON';
+    let button = document.createElement('button');
+    button.id = 'gameOverButton';
+    button.innerHTML = 'Start New Game';
+    gameMain.appendChild(gameOver);
+    gameOver.appendChild(gameOverContent);
+    gameOverContent.appendChild(p);
+    gameOverContent.appendChild(button);
+    document.querySelector('#cases').style.opacity = 0.5;
+    button.onclick = newGame;
+    cellsOpened = 0;
+}
+
+const startGame = document.querySelector('#gameOver button');
+
+startGame.onclick = newGame;
 randomMines();
 
 for (let i = 0; i < 10; ++i)
@@ -125,13 +184,34 @@ for (let i = 0; i < 10; ++i)
                 }
                 e.target.src = './images/redMineCase.jpg';
                 gameOver();
-            } else if (e.target.alt === '0') {
-                cube[i][j].src = './images/0Case.jpg';
-                revealNearby(i, j);
-            } else {
+            } else if (cellsDiscovered[i][j] === 0) {
+                ++cellsOpened;
+                cellsDiscovered[i][j] = 1;
                 e.target.src = `./images/${e.target.alt}Case.jpg`;
+                if (e.target.alt === '0') {
+                    revealNearby(i, j);
+                } if (cellsOpened === 90) {
+                    gameWon();
+                }
             }
 
         })
+        cube[i][j].addEventListener('contextmenu', function (ev) {
+            ev.preventDefault();
+            if (cellsDiscovered[i][j] === 2) {
+                ++flagsCount;
+                flag.textContent = flagsCount;
+                ev.target.src = './images/unopenedCase.jpg';
+                if (ev.target.alt === '#') {
+                    cellsDiscovered[i][j] = 3;
+                } else {
+                    cellsDiscovered[i][j] = 0;
+                }
+            } else if (flagsCount && (cellsDiscovered[i][j] === 0 || cellsDiscovered[i][j] === 9)) {
+                --flagsCount;
+                ev.target.src = './images/flagCase.jpg';
+                flag.textContent = flagsCount;
+                cellsDiscovered[i][j] = 2;
+            }
+        }, false);
     }
-
